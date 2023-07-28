@@ -175,6 +175,7 @@ proc insertEntry*(mkey: string, e: Entry) =
     verifyMasterkey(mkey)
     checkNameLength(e.name)
     checkPassword(e.password)
+    checkPassword(e.name)
 
     
     var exists = checkEntry(mkey, e.name)
