@@ -9,23 +9,23 @@ import system
 randomize()
 
 proc showError*(text: string) = 
-    discard execCmd("zenity --error --text=\'$1\'" % text)
+    discard execCmd("zenity --error --title='' --text=\'$1\'" % text)
 
 proc showSuccess*(text: string) = 
-    discard execCmd("zenity --info --text=\'Success! $1\'" % text)
+    discard execCmd("zenity --info --title='' --text=\'Success! $1\'" % text)
 
 proc show*(name, password: string) = 
-    discard execCmd("zenity --info --text=\'Name: $1\nPassword: $2\'" % [name, password])
+    discard execCmd("zenity --info --title='' --text=\'Name: $1\nPassword: $2\'" % [name, password])
 
 
 proc initStoragePrompt*(): string = 
-    var cmd =   "zenity --entry --hide-text --text=\'This is the first time you use nimpass. Therefore, storage must be initialized.\n" &
+    var cmd =   "zenity --entry --hide-text --title='' --text=\'This is the first time you use nimpass. Therefore, storage must be initialized.\n" &
                 "You have to input new masterkey. It will be used to work with passwords.\nInput masterkey:\'"
     var (pass1, es1) = execCmdEx(cmd)
     if es1 != 0: return ""
 
 
-    cmd =   "zenity --entry --hide-text --text=\'Please enter the masterkey again:\'"
+    cmd =   "zenity --entry --hide-text --title='' --text=\'Please enter the masterkey again:\'"
     var (pass2, es2) = execCmdEx(cmd)
     if es2 != 0: return ""
 
@@ -44,7 +44,7 @@ proc initStoragePrompt*(): string =
     return pass1
 
 proc masterkeyPrompt*(): string = 
-    var cmd = "zenity --entry --hide-text --text=\'Please input masterkey to continue:\'"
+    var cmd = "zenity --entry --hide-text --title='' --text=\'Please input masterkey to continue:\'"
     var (pass, es) = execCmdEx(cmd)
     if es != 0: return ""
 
@@ -58,7 +58,7 @@ const randomPasswordLen = 32
 let alphabet* = toSeq("1234567890qwertyuiopasdfghjklzxcvbnm!@#$^*+_=-QWERTYUIOPASDFGHJKLZXCVBNM".items)
 
 proc passwordPrompt*(): string = 
-    var cmd =   "zenity --question --text=\"Do you want to use a randomly generated password? " &
+    var cmd =   "zenity --question --title='' --text=\"Do you want to use a randomly generated password? " &
                 "Press Yes if yes, and No if you want to input the password yourself.\"; echo $?"
 
     var (opt, es) = execCmdEx(cmd)
@@ -71,7 +71,7 @@ proc passwordPrompt*(): string =
             password.add(sample(alphabet))
         return password
 
-    (password, es) = execCmdEx("zenity --entry --hide-text --text=\"Enter the password:\"")
+    (password, es) = execCmdEx("zenity --entry --hide-text --title='' --text=\"Enter the password:\"")
     if es != 0: return "" 
 
     password = password.strip(chars = {'\n'})
