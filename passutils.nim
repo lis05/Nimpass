@@ -1,5 +1,5 @@
 import os
-import system/io
+#import system/io          # for some reason this just stopped working. idk why, but let it be
 import strutils
 import dialogs
 import safeutils
